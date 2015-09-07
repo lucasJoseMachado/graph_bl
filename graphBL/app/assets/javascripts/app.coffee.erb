@@ -1,0 +1,6 @@
+@graph_bl = angular.module('graph_bl', ['ngRoute', 'ngAnimate', 'ngResource', 'templates'])
+
+.config(['$routeProvider', ($routeProvider) ->
+  $routeProvider
+    .otherwise({templateUrl: "main.html", controller: 'MainCtrl'})
+])

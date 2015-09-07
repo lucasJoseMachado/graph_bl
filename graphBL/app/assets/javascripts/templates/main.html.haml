@@ -1,0 +1,8 @@
+.row.form-group
+  .col-xs-12.text-center
+    %input{type: "number", "ng-model" => "min_clusters", min: 0, placeholder: "Enter minimum number of clusters to found", style: "min-width: 230px"}
+    %button.btn.btn-primary{"ng-click" => "clusterer()", "ng-if" => "!clustering"} Cluster
+    %button.btn.btn-primary{"ng-if" => "clustering", disabled: true} Clustering...
+.row.form-group
+  .col-xs-12
+    #map

@@ -1,0 +1,48 @@
+source 'http://rubygems.org'
+source 'https://rails-assets.org'
+
+# API
+gem 'blanket_wrapper'
+
+#general
+gem 'paleta'
+
+#angular
+gem 'angularjs-rails'
+gem 'angular-rails-templates'
+
+#javascript
+gem 'rails-assets-leaflet'
+
+#background
+gem 'sidekiq'
+
+#basic
+gem 'rails'
+gem 'uglifier'
+gem 'coffee-rails'
+gem 'jquery-rails'
+gem 'jbuilder'
+gem 'sdoc'
+gem 'tzinfo-data', platforms: [:mingw, :mswin]
+gem 'sprockets', '2.12.3'
+gem 'responders'
+
+#develop
+gem 'haml'
+gem 'haml-rails'
+gem "bower-rails"
+
+#debug
+gem "better_errors"
+gem "binding_of_caller"
+gem 'quiet_assets'
+gem 'byebug'
+
+#design
+gem 'sass-rails'
+gem 'bootstrap-sass'
+gem 'font-awesome-sass'
+
+#database
+gem 'neography'
