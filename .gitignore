@@ -1,0 +1,12 @@
+/graphBL/.bundle
+/graphBL/log/*
+/graphBL/tmp
+/graphBL/neo4j/data
+/graphBL/gremlin
+/graphBL/.bundle
+
+
+/neo4j_extension/bin
+/neo4j_extension/target
+*.class
+/.metadata
