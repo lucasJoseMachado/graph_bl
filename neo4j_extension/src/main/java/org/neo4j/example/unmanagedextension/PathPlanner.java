@@ -17,21 +17,27 @@ import org.neo4j.graphdb.Relationship;
 
 @Path("/service")
 public class PathPlanner {
+	GraphDatabaseService db;	
 	WeightedPath path = null;
+	
+	 public PathPlanner( @Context GraphDatabaseService graphDb ){
+        this.db = graphDb;
+    }
 	
 	@GET
     @Path("/bike_lane_proposal/from/{from}/to/{to}")
     @Produces("application/json")
-    public Response bikeLaneProposal(@PathParam("from") Long from, @PathParam("to") Long to, @Context GraphDatabaseService db) throws IOException {
+    public Response bikeLaneProposal(@PathParam("from") Long from, @PathParam("to") Long to) {
        Node nodeA = db.getNodeById(from);
-       Node nodeB = db.getNodeById(to);  
-       Double bikePenality = 0.2;
-       do{
-    	   path = AStar.calculate(nodeA, nodeB, bikePenality);
-    	   if(path != null && foundNewBikeLane()) return getFormattedResponse();
-    	   bikePenality += 0.1;
-       } while(bikePenality <= 1.0);
-       return Response.noContent().build();
+       Node nodeB = db.getNodeById(to);
+       return Response.ok().entity( "oi" ).build();
+//       Double bikePenality = 0.2;
+//       do{
+//    	   path = AStar.calculate(nodeA, nodeB, bikePenality);
+//    	   if(path != null && foundNewBikeLane()) return getFormattedResponse();
+//    	   bikePenality += 0.1;
+//       } while(bikePenality <= 1.0);
+//       return Response.noContent().build();
 	}
 	
 	private Boolean foundNewBikeLane(){
