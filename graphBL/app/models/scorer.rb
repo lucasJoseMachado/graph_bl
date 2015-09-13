@@ -5,10 +5,11 @@ class Scorer
       temp_graph = new TinkerGraph()
       g.V.both('Bike').unique().each { temp_graph.addVertex( it.id ) }
       g.E.has('label', 'Bike').each { temp_graph.addEdge(temp_graph.getVertex(it.inV.next().id), temp_graph.getVertex(it.outV.next().id), 'Bike') }
-      scorer = new BetweennessCentrality(new GraphJung(temp_graph), true, false)
+      graph_jung = new GraphJung(temp_graph)
+      scorer = new BetweennessCentrality(graph_jung, true, false)
       scorer.setRemoveRankScoresOnFinalize(false)
       scorer.evaluate()
-      g.V.both('Bike').unique().each { it.score = scorer.getVertexRankScore(it) }
+      graph_jung.getVertices().each { g.v(it.id).score = scorer.getVertexRankScore(it) }
     EOF
   end
 end

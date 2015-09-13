@@ -8,7 +8,7 @@ class GraphDatabase
   end
 
   def self.api
-    Blanket.wrap("http://localhost:7474/example")
+    Blanket.wrap("http://localhost:7474/example/service")
   end
 
   def self.within_distance(layer, pointx, pointy, distance)
