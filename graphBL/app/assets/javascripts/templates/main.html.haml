@@ -1,8 +1,32 @@
 .row.form-group
   .col-xs-12.text-center
-    %input{type: "number", "ng-model" => "min_clusters", min: 0, placeholder: "Enter minimum number of clusters to found", style: "min-width: 230px"}
-    %button.btn.btn-primary{"ng-click" => "clusterer()", "ng-if" => "!clustering"} Cluster
-    %button.btn.btn-primary{"ng-if" => "clustering", disabled: true} Clustering...
+    %input{type: "number", "ng-model" => "propose_params.clusters", min: 2, placeholder: "Enter minimum number of clusters to form", style: "min-width: 230px"}
+    %input{type: "checkbox", "ng-model" => "propose_params.scorer", checked: true}
+      %span Execute scorer?
+    %input{type: "number", "ng-model" => "propose_params.pairs_to_pick", min: 1, placeholder: "Enter pairs quantity", style: "min-width: 230px"}
+    %input{type: "number", "ng-model" => "propose_params.paths_to_calculate", min: 0, placeholder: "Enter quantity of paths to calculate", style: "min-width: 230px"}
+    %button.btn.btn-primary{"ng-click" => "propose()", "ng-if" => "!proposing"} Get Proposal
+    %button.btn.btn-primary{"ng-if" => "proposing", disabled: true} Processing...
 .row.form-group
-  .col-xs-12
+  .col-xs-12.text-center
+    %input{type: "number", "ng-model" => "min_clusters", min: 0, placeholder: "Enter minimum number of clusters to found", style: "min-width: 230px"}
+    %button.btn.btn-primary{"ng-click" => "clusterer()", "ng-if" => "!clustering"} Get Clusters
+    %button.btn.btn-primary{"ng-if" => "clustering", disabled: true} Processing...
+.row.form-group
+  .col-xs-12.text-center
+    %button.btn.btn-primary{"ng-click" => "calculate_score()", "ng-if" => "!scoring"} Get Scores
+    %button.btn.btn-primary{"ng-if" => "scoring", disabled: true} Processing...
+.row.form-group
+  .col-xs-12.text-center
+    %input{type: "number", "ng-model" => "pairs_qt", min: 0, placeholder: "Enter pairs quantity", style: "min-width: 230px"}
+    %button.btn.btn-primary{"ng-click" => "get_pairs(pairs_qt)", "ng-if" => "pairs_qt && !paring"} Get Pairs
+    %button.btn.btn-primary{"ng-if" => "!pairs_qt || paring", disabled: true} Processing...
+.row.form-group
+  .col-xs-12.text-center
+    %input{type: "number", "ng-model" => "point_a", min: 0, placeholder: "Enter origin", style: "min-width: 230px"}
+    %input{type: "number", "ng-model" => "point_b", min: 0, placeholder: "Enter destination", style: "min-width: 230px"}
+    %button.btn.btn-primary{"ng-click" => "path(point_a, point_b)", "ng-if" => "point_a && point_b && !pathing"} Get Path
+    %button.btn.btn-primary{"ng-if" => "!point_a || !point_b || paring", disabled: true} Processing...
+.row.form-group
+  .col-xs-12.text-center
     #map

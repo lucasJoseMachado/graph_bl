@@ -2,13 +2,6 @@ class LayersController < ApplicationController
   respond_to :json
   before_action :set_layer, only: [:car, :bike]
 
-  def clusterer
-    @clusters = Cluster.execute params[:min_clusters]
-    respond_to do |format|
-      format.json { render json: @clusters.count }
-    end
-  end
-
   def car
     respond_with(@layer)
   end

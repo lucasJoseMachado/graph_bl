@@ -5,7 +5,16 @@ Rails.application.routes.draw do
       get 'bike'
       get 'car'
       get 'point'
+    end
+  end
+
+  resources :proposer do
+    collection do
       post 'clusterer'
+      post 'path'
+      post 'calculate_score'
+      post 'get_pairs'
+      post 'propose'
     end
   end
 end
