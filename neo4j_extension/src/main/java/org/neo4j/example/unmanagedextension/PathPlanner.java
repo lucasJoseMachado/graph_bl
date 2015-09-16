@@ -1,6 +1,7 @@
 package org.neo4j.example.unmanagedextension;
 
 import java.io.IOException;
+import java.io.PrintStream;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,23 +15,25 @@ import org.neo4j.graphalgo.WeightedPath;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Transaction;
 
 @Path("/service")
 public class PathPlanner {
-	GraphDatabaseService db;	
+	GraphDatabaseService graphDb;	
 	WeightedPath path = null;
 	
 	 public PathPlanner( @Context GraphDatabaseService graphDb ){
-        this.db = graphDb;
+        this.graphDb = graphDb;
     }
 	
 	@GET
     @Path("/bike_lane_proposal/from/{from}/to/{to}")
     @Produces("application/json")
     public Response bikeLaneProposal(@PathParam("from") Long from, @PathParam("to") Long to) {
-       Node nodeA = db.getNodeById(from);
-       Node nodeB = db.getNodeById(to);
-       return Response.ok().entity( "oi" ).build();
+		Transaction tx = graphDb.beginTx();
+		try{
+			Node nodeA = graphDb.getNodeById(from);
+			Node nodeB = graphDb.getNodeById(to);
 //       Double bikePenality = 0.2;
 //       do{
 //    	   path = AStar.calculate(nodeA, nodeB, bikePenality);
@@ -38,6 +41,14 @@ public class PathPlanner {
 //    	   bikePenality += 0.1;
 //       } while(bikePenality <= 1.0);
 //       return Response.noContent().build();
+			tx.success();
+	    } catch (Exception e) {
+		    tx.failure();
+	        System.err.println(e.getMessage());
+	    } finally {
+	      tx.finish();
+	    }
+		return Response.ok().entity( "oi" ).build();
 	}
 	
 	private Boolean foundNewBikeLane(){
