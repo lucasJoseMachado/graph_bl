@@ -32,7 +32,7 @@ public class AStar {
     public static CostEvaluator<Double> getCostEvaluator(final Double bikePenality){
     	return new CostEvaluator<Double>() {		
 	 	   public Double getCost(Relationship relationship, Direction direction) {
-	 		   Double length = (Double) relationship.getProperty("length"); 
+	 		   Double length = ((Number) relationship.getProperty("length")).doubleValue(); 
 	 		   return relationship.isType(relationsCustomTypes.Bike) ? length*bikePenality : length;
 	 	   }
 	    };

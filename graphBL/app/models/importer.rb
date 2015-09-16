@@ -46,7 +46,7 @@ class Importer
               AND point_2.code = #{end_node} \
             CREATE (point_1)-[track:#{track_type.capitalize}{
               geometry: '#{geometry}',
-              length: #{ length || 0 }
+              length: #{ length || 0.0 }
             }]->(point_2)
           EOF
         rescue

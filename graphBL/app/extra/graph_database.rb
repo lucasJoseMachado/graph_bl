@@ -7,10 +7,6 @@ class GraphDatabase
     @neo
   end
 
-  def self.api
-    Blanket.wrap("http://localhost:7474/example/service")
-  end
-
   def self.within_distance(layer, pointx, pointy, distance)
     @neo.find_geometries_within_distance(layer, pointx, pointy, distance).map{ |node| node["data"] }
   end

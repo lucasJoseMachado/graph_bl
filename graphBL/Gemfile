@@ -1,9 +1,6 @@
 source 'http://rubygems.org'
 source 'https://rails-assets.org'
 
-# API
-gem 'blanket_wrapper'
-
 #general
 gem 'paleta'
 
