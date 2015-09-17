@@ -72,7 +72,8 @@ namespace :db do
   end
 
   task :setup => :environment do
-    %w(clean import turn_spatial unify_points cache_distances).each do |command|
+    # turn_spatial unify_points cache_distances
+    %w(clean import).each do |command|
       puts "calling #{command}..."
       Rake::Task["db:#{command}"].invoke
     end

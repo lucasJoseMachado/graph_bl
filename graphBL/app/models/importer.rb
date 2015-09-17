@@ -32,7 +32,7 @@ class Importer
       start_node = track["start_node"]
       end_node   = track["end_node"]
       track_type = track["road_type"]
-      length     = track["length"]
+      length     = track["length"]*100
       descriptor = JSON.parse track["geom"]
       geometry   = descriptor["coordinates"]
       if start_node == end_node
@@ -40,16 +40,18 @@ class Importer
         errors << "IGNORED! TRACKS, Line #{i} - start_node == end_node"
       else
         begin
-          GraphDatabase.in_transaction <<-EOF \
+          GraphDatabase.in_transaction " \
             MATCH (point_1:Point), (point_2:Point) \
             WHERE point_1.code = #{start_node} \
               AND point_2.code = #{end_node} \
-            CREATE (point_1)-[track:#{track_type.capitalize}{
-              geometry: '#{geometry}',
-              length: #{ length || 0.0 }
-            }]->(point_2)
-          EOF
-        rescue
+            CREATE (point_1)-[track:#{track_type.capitalize}{ \
+              geometry: '#{geometry}', \
+              length: #{ length || 0.0 } \
+            }]->(point_2)"
+        rescue Neography::NeographyError => err
+          puts err.message     # Neo4j error message
+          puts err.code        # HTTP error code
+          puts err.stacktrace  # Neo4j Java stacktrace
           errors << "ERRO! TRACKS, Line #{i}"
         end
       end
