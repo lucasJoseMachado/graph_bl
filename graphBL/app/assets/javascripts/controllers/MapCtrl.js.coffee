@@ -1,6 +1,6 @@
 angular.module('graph_bl')
 
-.controller('MapCtrl', ($scope) ->
+.controller('MapCtrl', ($scope, $http) ->
   $scope.pointLayers = []
 
   $scope.init = ->
@@ -10,6 +10,14 @@ angular.module('graph_bl')
     $scope.mapInstance.setView start_point, start_zoom
     $scope.geoJson = L.geoJson().addTo($scope.mapInstance);
     $scope.add_osm_layer()
+
+  $scope.reloadPoints = ->
+    $http.get("/layers/point.json").success (data) ->
+      $scope.drawPoints(data)
+
+  $scope.reloadBikeLayer = ->
+    $http.get("/layers/bike.json").success (data) ->
+      $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'Bike'})
 
   $scope.add_osm_layer = ->
     osmTile = new L.tileLayer 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -64,5 +72,4 @@ angular.module('graph_bl')
     $scope.pointLayers = []
     for cluster_color of points
       $scope.pointLayers = $scope.pointLayers.concat $scope.drawLayer(points[cluster_color], {geometryType: 'Point', layerType: cluster_color})
-    console.log $scope.pointLayers
 )

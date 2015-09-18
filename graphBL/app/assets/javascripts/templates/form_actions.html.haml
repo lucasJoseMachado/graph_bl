@@ -1,0 +1,16 @@
+.col-xs-12.text-center
+  .col-xs-3
+    %input{type: "number", "ng-model" => "propose_params.clusters", min: 2, placeholder: "Número mínimo de agrupamentos"}
+  .col-xs-3
+    %input{type: "checkbox", "ng-model" => "propose_params.scorer", checked: true}
+    %strong.text-primary Classificar?
+  .col-xs-3
+    %input{type: "number", "ng-model" => "propose_params.pairs_to_pick", min: 1, placeholder: "Quantidade de pares"}
+  .col-xs-3
+    %input{type: "number", "ng-model" => "propose_params.paths_to_calculate", min: 0, placeholder: "Quantidade de caminhos"}
+.row.form-group
+.col-xs-12.text-center
+  %button.btn.btn-success{"ng-click" => "propose()", "ng-disabled" => "processing"} Obter propostas
+  %button.btn.btn-warning{"ng-click" => "clusterer(propose_params.clusters)", "ng-disabled" => "processing"} Obter apenas os agrupamentos
+  %button.btn.btn-warning{"ng-click" => "calculate_score()", "ng-disabled" => "processing"} Obter apenas a classificação
+  %button.btn.btn-warning{"ng-click" => "get_pairs(propose_params.pairs_to_pick)", "ng-disabled" => "processing"} Obter apenas os pares

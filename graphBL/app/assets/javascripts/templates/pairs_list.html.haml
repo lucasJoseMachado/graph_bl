@@ -1,1 +1,5 @@
-#TODO create a modal to list pairs and choose paths to calculate
+%span.text-warning
+  A proposta só é valida ate a seleção de um novo caminho, após isto, não se garante que um possível segundo caminho escolhido seja ideal para a nova configuração das ciclovias.
+.row{"ng-repeat" => "pair in pairs"}
+  {{pair.origin.id}} ( {{pair.origin.score}} ) <-- {{pair.distance}} metros --> {{pair.destination.id}} ( {{pair.destination.score}} )
+  %a.btn.btn-primary.btn-sm{"ng-click" => "path(pair.origin.id, pair.destination.id)", "ng-disabled" => "processing"} Obter caminho

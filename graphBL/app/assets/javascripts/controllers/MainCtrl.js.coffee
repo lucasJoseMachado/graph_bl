@@ -1,42 +1,41 @@
 angular.module('graph_bl')
 
 .controller('MainCtrl', ($scope, $http, $controller) ->
-    angular.extend(this, $controller('MapCtrl', $scope: $scope))
-    $scope.min_clusters = null
-    $scope.clustering = false
-
-    $scope.reloadPoints = ->
-      $http.get("/layers/point.json").success (data) ->
-        $scope.drawPoints(data)
-
-    $scope.reloadBikeLayer = ->
-      $http.get("/layers/bike.json").success (data) ->
-        $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'Bike'})
+    angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
 
     $scope.init()
     $scope.reloadBikeLayer()
     $scope.reloadPoints()
+    $scope.processing = false
 
-    $scope.clusterer = ->
-      $scope.clustering = true
-      $http.post("/proposers/clusterer.json", min_clusters: ($scope.min_clusters || 0)).success (data) ->
+    $scope.clusterer = (min_clusters) ->
+      $scope.processing = true
+      $http.post("/proposer/clusterer.json", min_clusters: min_clusters || 0).success (data) ->
         $scope.reloadPoints()
-        $scope.clustering = false
+        $scope.processing = false
 
-    $scope.propose = ->
-      $scope.propose_params ||= {}
-      $http.post("/proposers/propose.json", $scope.propose_params).success (data) ->
+    $scope.calculate_score = ->
+      $scope.processing = true
+      $http.post("/proposer/calculate_score.json").success (data) ->
+        $scope.reloadPoints()
+        $scope.processing = false
+
+    $scope.get_pairs = (pairs_qt) ->
+      $scope.processing = true
+      $http.post("/proposer/get_pairs.json", pairs: pairs_qt || 1).success (data) ->
+        $scope.processing = false
         return #TODO
 
     $scope.path = (point_a, point_b) ->
-      $http.post("/proposers/path.json", point_a: point_a, point_b: point_b).success (data) ->
+      $scope.processing = true
+      $http.post("/proposer/path.json", point_a: point_a, point_b: point_b).success (data) ->
+        $scope.processing = false
         return #TODO
 
-    $scope.calculate_score = ->
-      $http.post("/proposers/calculate_score.json").success (data) ->
-        return #TODO
-
-    $scope.get_pairs = (pairs_qt) ->
-      $http.post("/proposers/get_pairs.json", pairs: pairs_qt).success (data) ->
+    $scope.propose = ->
+      $scope.processing = true
+      $scope.propose_params ||= {}
+      $http.post("/proposer/propose.json", $scope.propose_params).success (data) ->
+        $scope.processing = false
         return #TODO
 )
