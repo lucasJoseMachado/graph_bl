@@ -7,6 +7,12 @@ angular.module('graph_bl')
     $scope.reloadBikeLayer()
     $scope.reloadPoints()
     $scope.processing = false
+    $scope.params = {
+      clusters: 2,
+      scorer: true,
+      pairs_to_pick: 1,
+      paths_to_calculate: 0
+    }
 
     $scope.clusterer = (min_clusters) ->
       $scope.processing = true
@@ -22,20 +28,23 @@ angular.module('graph_bl')
 
     $scope.get_pairs = (pairs_qt) ->
       $scope.processing = true
-      $http.post("/proposer/get_pairs.json", pairs: pairs_qt || 1).success (data) ->
+      $http.post("/proposer/get_pairs.json", pairs: pairs_qt).success (data) ->
+        $scope.pairs = data
         $scope.processing = false
-        return #TODO
 
-    $scope.path = (point_a, point_b) ->
+    $scope.get_path = (pair) ->
       $scope.processing = true
-      $http.post("/proposer/path.json", point_a: point_a, point_b: point_b).success (data) ->
+      $http.post("/proposer/path.json", point_a: pair.origin.id, point_b: pair.destination.id).success (data) ->
+        pair.path = data
         $scope.processing = false
-        return #TODO
+
+    $scope.add_path = (path) ->
+      return #TODO adicionar caminho no grafo como apenas ciclovias
 
     $scope.propose = ->
       $scope.processing = true
-      $scope.propose_params ||= {}
-      $http.post("/proposer/propose.json", $scope.propose_params).success (data) ->
+      $http.post("/proposer/propose.json", $scope.params).success (data) ->
+        $scope.reloadPoints()
+        $scope.pairs = data
         $scope.processing = false
-        return #TODO
 )

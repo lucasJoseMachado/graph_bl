@@ -1,13 +1,12 @@
 class LayersController < ApplicationController
-  respond_to :json
   before_action :set_layer, only: [:car, :bike]
 
   def car
-    respond_with(@layer)
+    render json: @layer
   end
 
   def bike
-    respond_with(@layer)
+    render json: @layer
   end
 
   def point
@@ -17,7 +16,7 @@ class LayersController < ApplicationController
       RETURN distinct id(a), [a.lat, a.lon], a.cluster_color
       EOF
     ).map{ |point| { geometry: point[1], cluster_color: point[2] } }.group_by{ |v| v[:cluster_color] }
-    respond_with(@layer)
+    render json: @layer
   end
 
   def index

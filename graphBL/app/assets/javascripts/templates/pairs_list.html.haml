@@ -1,5 +1,17 @@
-%span.text-warning
-  A proposta só é valida ate a seleção de um novo caminho, após isto, não se garante que um possível segundo caminho escolhido seja ideal para a nova configuração das ciclovias.
-.row{"ng-repeat" => "pair in pairs"}
-  {{pair.origin.id}} ( {{pair.origin.score}} ) <-- {{pair.distance}} metros --> {{pair.destination.id}} ( {{pair.destination.score}} )
-  %a.btn.btn-primary.btn-sm{"ng-click" => "path(pair.origin.id, pair.destination.id)", "ng-disabled" => "processing"} Obter caminho
+.form-group
+  %strong.text-warning.text-justify
+    A proposta só é valida ate a seleção de um novo caminho, após isto, não se garante que um possível segundo caminho escolhido seja ideal para a nova configuração das ciclovias.
+.form-group{"ng-if" => "!path", "ng-repeat" => "pair in pairs"}
+  %div
+    Ponto {{pair.origin.id}}
+    %span.text-info ({{pair.origin.score}})
+    <-- {{pair.distance}} metros -->
+    ponto {{pair.destination.id}}
+    %span.text-info ({{pair.destination.score}})
+    %a.btn.btn-primary.btn-xs.pull-right{"ng-click" => "get_path(pair)", "ng-disabled" => "processing"} Ver
+  %div{"ng-if" => "pair.path"}
+    {{pair.path}}
+    %a.btn.btn-link.pull-right{"ng-click" => "add_path(pair.path)"}
+      %i.fa.fa-plus-square.text-primary
+    %a.btn.btn-link.pull-right{"ng-click" => "pair.path = null"}
+      %i.fa.fa-minus-square.text-danger
