@@ -11,7 +11,7 @@ class PairPicker
     #TODO retirar após fazer o calculo das distancias
     GraphDatabase.execute_query("
       match (a:Point), (b:Point)
-      where id(a) = 3 AND id(b) = 533
+      where id(a) = 147 AND id(b) = 682
       return {origin: {id: a.id, score: a.score}, destination: {id: b.id, score: b.score}, distance: 1}
       limit 1")
     .flatten

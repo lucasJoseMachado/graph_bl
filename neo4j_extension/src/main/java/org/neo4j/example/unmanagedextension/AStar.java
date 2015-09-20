@@ -1,5 +1,7 @@
 package org.neo4j.example.unmanagedextension;
 
+import java.awt.geom.Point2D;
+
 import org.neo4j.graphalgo.CostEvaluator;
 import org.neo4j.graphalgo.EstimateEvaluator;
 import org.neo4j.graphalgo.GraphAlgoFactory;
@@ -23,16 +25,18 @@ public class AStar {
 	static EstimateEvaluator<Double> estimateEvaluator = new EstimateEvaluator<Double>(){
         public Double getCost( final Node node, final Node goal )
         {
-            double dx = (Double) node.getProperty( "lat" ) - (Double) goal.getProperty( "lat" );
-            double dy = (Double) node.getProperty( "lon" ) - (Double) goal.getProperty( "lon" );
-            return Math.sqrt( dx*dx + dy*dy );
+            return Point2D.distance(
+				(Double) node.getProperty("lat"),
+				(Double) node.getProperty("lon"),
+				(Double) goal.getProperty("lat"),
+				(Double) goal.getProperty("lon"));
         }
     };
     
     public static CostEvaluator<Double> getCostEvaluator(final Double bikePenality){
     	return new CostEvaluator<Double>() {		
 	 	   public Double getCost(Relationship relationship, Direction direction) {
-	 		   Double length = ((Number) relationship.getProperty("length")).doubleValue(); 
+	 		   Double length = (Double) relationship.getProperty("length", new Double(0.0));
 	 		   return relationship.isType(relationsCustomTypes.Bike) ? length*bikePenality : length;
 	 	   }
 	    };
@@ -42,7 +46,7 @@ public class AStar {
     	PathFinder<WeightedPath> astar = GraphAlgoFactory.aStar(
      		   pathTypes,
      		   getCostEvaluator(bikePenality),
-     		   estimateEvaluator );
-        return astar.findSinglePath( nodeA, nodeB );
+     		   estimateEvaluator );    	
+    	return astar.findSinglePath( nodeA, nodeB );
     }
 }
