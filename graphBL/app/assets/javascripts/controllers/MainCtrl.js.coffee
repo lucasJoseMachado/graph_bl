@@ -38,6 +38,17 @@ angular.module('graph_bl')
         pair.path = data
         $scope.processing = false
 
+    $scope.show_path = (path) ->
+      path_array = path.map (relation) -> geometry
+      $scope.drawLayer(path_array, {geometryType: 'LineString', layerType: 'Car'})
+      return # TODO corrigir este metodo
+
+    $scope.path_length = (path) ->
+      total = 0
+      for relation in path
+        total += relation.length
+      total
+
     $scope.add_path = (path) ->
       return #TODO adicionar caminho no grafo como apenas ciclovias
 

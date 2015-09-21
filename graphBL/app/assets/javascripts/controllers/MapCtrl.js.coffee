@@ -65,11 +65,14 @@ angular.module('graph_bl')
       fillOpacity: 1
     }
 
-  $scope.drawPoints = (points) ->
+  $scope.clearPointLayers = () ->
     if $scope.pointLayers.length > 0
       for layer in $scope.pointLayers
         $scope.mapInstance.removeLayer(layer)
     $scope.pointLayers = []
+
+  $scope.drawPoints = (points) ->
+    $scope.clearPointLayers()
     for cluster_color of points
       $scope.pointLayers = $scope.pointLayers.concat $scope.drawLayer(points[cluster_color], {geometryType: 'Point', layerType: cluster_color})
 )

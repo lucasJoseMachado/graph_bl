@@ -10,8 +10,13 @@
     %span.text-info ({{pair.destination.score}})
     %a.btn.btn-primary.btn-xs.pull-right{"ng-click" => "get_path(pair)", "ng-disabled" => "processing"} Ver
   %div{"ng-if" => "pair.path"}
-    {{pair.path}}
+    %p Distância: {{path_length(pair.path)}}
+    %p Nova ciclovia: {{pair.path.is_new_bike_lane ? 'sim' : 'não'}}
     %a.btn.btn-link.pull-right{"ng-click" => "add_path(pair.path)"}
       %i.fa.fa-plus-square.text-primary
     %a.btn.btn-link.pull-right{"ng-click" => "pair.path = null"}
       %i.fa.fa-minus-square.text-danger
+    %a.btn.btn-link.pull-right{"ng-click" => "show_path(pair.path)"}
+      %i.fa.fa-eye.text-warning
+    .row.text-warning
+      {{pair.path}}
