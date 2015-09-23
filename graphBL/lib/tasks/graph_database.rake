@@ -1,5 +1,5 @@
 namespace :extension do
-  task :compile_astar => :environment do
+  task :compile => :environment do
     Dir.chdir('../neo4j_extension'){
       system "mvn clean package"
     }

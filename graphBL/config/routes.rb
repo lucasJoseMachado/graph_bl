@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       post 'calculate_score'
       post 'get_pairs'
       post 'propose'
+      post 'add_bike_lane'
     end
   end
 end

@@ -2,6 +2,7 @@ angular.module('graph_bl')
 
 .controller('MainCtrl', ($scope, $http, $controller) ->
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
+    angular.extend(this, $controller('PathCtrl', $scope: $scope, $http: $http))
 
     $scope.init()
     $scope.reloadBikeLayer()
@@ -31,26 +32,6 @@ angular.module('graph_bl')
       $http.post("/proposer/get_pairs.json", pairs: pairs_qt).success (data) ->
         $scope.pairs = data
         $scope.processing = false
-
-    $scope.get_path = (pair) ->
-      $scope.processing = true
-      $http.post("/proposer/path.json", point_a: pair.origin.id, point_b: pair.destination.id).success (data) ->
-        pair.path = data
-        $scope.processing = false
-
-    $scope.show_path = (path) ->
-      path_array = path.map (relation) -> geometry
-      $scope.drawLayer(path_array, {geometryType: 'LineString', layerType: 'Car'})
-      return # TODO corrigir este metodo
-
-    $scope.path_length = (path) ->
-      total = 0
-      for relation in path
-        total += relation.length
-      total
-
-    $scope.add_path = (path) ->
-      return #TODO adicionar caminho no grafo como apenas ciclovias
 
     $scope.propose = ->
       $scope.processing = true

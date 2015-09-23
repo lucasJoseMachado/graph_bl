@@ -1,19 +1,18 @@
 .form-group{"ng-if" => "!path", "ng-repeat" => "pair in pairs"}
-  %div
-    Ponto {{pair.origin.id}}
-    %span.text-info ({{pair.origin.score}})
-    <-- {{pair.distance}} metros -->
-    ponto {{pair.destination.id}}
-    %span.text-info ({{pair.destination.score}})
-    %a.btn.btn-primary.btn-xs.pull-right{"ng-click" => "get_path(pair)", "ng-disabled" => "processing"} Ver
-  %div{"ng-if" => "pair.path"}
-    %p Distância: {{path_length(pair.path)}}
-    %p Nova ciclovia: {{pair.path.is_new_bike_lane ? 'sim' : 'não'}}
-    %a.btn.btn-link.pull-right{"ng-click" => "add_path(pair.path)"}
-      %i.fa.fa-plus-square.text-primary
-    %a.btn.btn-link.pull-right{"ng-click" => "pair.path = null"}
-      %i.fa.fa-minus-square.text-danger
-    %a.btn.btn-link.pull-right{"ng-click" => "show_path(pair.path)"}
-      %i.fa.fa-eye.text-warning
-    .row.text-warning
-      {{pair.path}}
+  %div.row
+    .col-xs-12
+      Ponto {{pair.origin.id}}
+      %span.text-info ({{pair.origin.score}})
+      <-- {{pair.distance}} metros -->
+      ponto {{pair.destination.id}}
+      %span.text-info ({{pair.destination.score}})
+      %a.btn.btn-link.pull-right{"ng-click" => "show_path(pair)"}
+        %i.fa.fa-eye.text-primary
+      %a.btn.btn-link.pull-right{"ng-if" => "pair.path", "ng-click" => "add_path($index)"}
+        %i.fa.fa-plus-square.text-primary
+      %a.btn.btn-link.pull-right{"ng-if" => "pair.path", "ng-click" => "pair.path = null; clear_current_path()"}
+        %i.fa.fa-minus-square.text-danger
+  %div.row{"ng-if" => "pair.path"}
+    .col-xs-12
+      %p > Distância: {{pair.path.total_length}}
+      %p > Nova ciclovia: {{pair.path.is_new_bike_lane ? 'sim' : 'não'}}

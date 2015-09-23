@@ -4,6 +4,13 @@ class ProposerController < ApplicationController
     render json: @proposal
   end
 
+  def add_bike_lane
+    if params[:path].present? && params[:path]['is_new_bike_lane']
+      Proposer.add_bike_lanes params[:path]['relationships']
+    end
+    render nothing: true
+  end
+
   def path
     @point_a = params[:point_a]
     @point_b = params[:point_b]

@@ -66,6 +66,7 @@ public class PathPlanner {
 		List<Object> relationships = new ArrayList<Object>();
 		for (Relationship relationship : path.relationships()) {
 			Map<String, Object> relation = new HashMap<String, Object>();
+			relation.put("id", relationship.getId());
 			relation.put("type", relationship.getType().name());
 			relation.put("length", relationship.getProperty("length", new Double(0.0)));
 			relation.put("geometry", relationship.getProperty("geometry", ""));
