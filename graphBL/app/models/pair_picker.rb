@@ -18,7 +18,7 @@ class PairPicker
         WHERE c.cluster_id <> b.cluster_id OR c.cluster IS NULL
       WITH DISTINCT a as a, b as b
         RETURN {origin: {id: a.id, score: a.score}, destination: {id: b.id, score: b.score}}
-        ORDER BY (a.score + b.score)/2
+        ORDER BY (a.score + b.score) DESC
         LIMIT 100")
     .flatten
   end
