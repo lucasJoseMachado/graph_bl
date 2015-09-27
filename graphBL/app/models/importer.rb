@@ -15,7 +15,7 @@ class Importer
         node_id    = point["node_id"]
         descriptor = JSON.parse point["geom"]
         geometry   = descriptor["coordinates"]
-        points << "(point_#{node_id}:Point{ code: #{node_id}, lat: #{geometry[0]}, lon: #{geometry[1]}, score: 0, cluster_id: 0 })"
+        points << "(point_#{node_id}:Point{ code: #{node_id}, lat: #{geometry[0]}, lon: #{geometry[1]} })"
       end
       GraphDatabase.in_transaction "CREATE #{points.join(', ')}"
     end

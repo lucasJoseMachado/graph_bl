@@ -5,7 +5,7 @@ class Proposer
     options[:pairs_to_pick] ||= 50
     Cluster.execute(options[:clusters])
     Scorer.execute if options[:scorer]
-    PairPicker.execute(options[:pairs_to_pick])
+    PairPicker.execute
   end
 
   def self.add_bike_lanes relations

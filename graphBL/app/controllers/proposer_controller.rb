@@ -19,7 +19,7 @@ class ProposerController < ApplicationController
   end
 
   def get_pairs
-    @pairs = PairPicker.execute(params[:pairs])
+    @pairs = PairPicker.execute
     render json: @pairs
   end
 

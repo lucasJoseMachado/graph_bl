@@ -11,7 +11,6 @@ angular.module('graph_bl')
     $scope.params = {
       clusters: 2,
       scorer: true,
-      pairs_to_pick: 1,
       paths_to_calculate: 0
     }
 
@@ -27,9 +26,9 @@ angular.module('graph_bl')
         $scope.reloadPoints()
         $scope.processing = false
 
-    $scope.get_pairs = (pairs_qt) ->
+    $scope.get_pairs = () ->
       $scope.processing = true
-      $http.post("/proposer/get_pairs.json", pairs: pairs_qt).success (data) ->
+      $http.post("/proposer/get_pairs.json").success (data) ->
         $scope.pairs = data
         $scope.processing = false
 
