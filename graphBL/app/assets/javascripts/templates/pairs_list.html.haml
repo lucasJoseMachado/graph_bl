@@ -3,10 +3,9 @@
     .col-xs-12
       Ponto {{pair.origin.id}}
       %span.text-info ({{pair.origin.score}})
-      <-- {{pair.distance}} metros -->
       ponto {{pair.destination.id}}
       %span.text-info ({{pair.destination.score}})
-      %a.btn.btn-link.pull-right{"ng-click" => "show_path(pair)"}
+      %a.btn.btn-link.pull-right{"ng-click" => "show_path($index)"}
         %i.fa.fa-eye.text-primary
       %a.btn.btn-link.pull-right{"ng-if" => "pair.path", "ng-click" => "add_path($index)"}
         %i.fa.fa-plus-square.text-primary
@@ -15,4 +14,3 @@
   %div.row{"ng-if" => "pair.path"}
     .col-xs-12
       %p > Distância: {{pair.path.total_length}}
-      %p > Nova ciclovia: {{pair.path.is_new_bike_lane ? 'sim' : 'não'}}

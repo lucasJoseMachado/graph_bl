@@ -45,7 +45,7 @@ public class PathPlanner {
 				if (path != null && foundNewBikeLane()) founded = true;
 				bikePenality += 0.1;
 			} while (founded == false && bikePenality <= 1.0);
-			if (path != null) result = getFormattedResponse();
+			if (founded) result = getFormattedResponse();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -64,17 +64,18 @@ public class PathPlanner {
 	private Response getFormattedResponse() {
 		Map<String, Object> astarMap = new HashMap<String, Object>();
 		List<Object> relationships = new ArrayList<Object>();
+		Double total_length = 0.0;
 		for (Relationship relationship : path.relationships()) {
-			Map<String, Object> relation = new HashMap<String, Object>();
-			relation.put("id", relationship.getId());
-			relation.put("type", relationship.getType().name());
-			relation.put("length", relationship.getProperty("length", new Double(0.0)));
-			relation.put("geometry", relationship.getProperty("geometry", ""));
-			relationships.add(relation);
+			if(relationship.isType(relationsCustomTypes.Car)){
+				Map<String, Object> relation = new HashMap<String, Object>();
+				relation.put("id", relationship.getId());
+				relation.put("geometry", relationship.getProperty("geometry", ""));
+				relationships.add(relation);
+				total_length += (Double) relationship.getProperty("length", new Double(0.0));
+			}
 		}
 		astarMap.put("relationships", relationships);
-		astarMap.put("total_length", path.weight());
-		astarMap.put("is_new_bike_lane", foundNewBikeLane());
+		astarMap.put("total_length", total_length);
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			return Response.ok().entity(objectMapper.writeValueAsString(astarMap)).build();

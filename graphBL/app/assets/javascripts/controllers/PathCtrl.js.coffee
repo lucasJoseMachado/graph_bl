@@ -1,21 +1,26 @@
 angular.module('graph_bl')
 
-.controller('PathCtrl', ($scope, $http, $controller) ->
+.controller('PathCtrl', ($scope, $http, $controller, toastr) ->
   angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
 
-  $scope.show_path = (pair) ->
+  $scope.show_path = (index_pair) ->
+    pair = $scope.pairs[index_pair]
     $scope.processing = true
     $http.post("/proposer/path.json", point_a: pair.origin.id, point_b: pair.destination.id).success (data) ->
       $scope.processing = false
-      pair.path = data
-      first_point = JSON.parse(pair.path.relationships[0].geometry)[0]
-      $scope.mapInstance.setView(new L.latLng(first_point.reverse()), 14)
-      geojson_parts = $scope.mount_path_geojson(pair.path)
-      $scope.clear_current_path()
-      $scope.current_path = {
-        geojson: geojson_parts,
-        layer: $scope.addGeoJsonLayer(geojson_parts, 'Car')
-    }
+      if data
+        pair.path = data
+        first_point = JSON.parse(pair.path.relationships[0].geometry)[0]
+        $scope.mapInstance.setView(new L.latLng(first_point.reverse()), 14)
+        geojson_parts = $scope.mount_path_geojson(pair.path)
+        $scope.clear_current_path()
+        $scope.current_path = {
+          geojson: geojson_parts,
+          layer: $scope.addGeoJsonLayer(geojson_parts, 'Car')
+        }
+      else
+        toastr.error('Não encontrado um caminho para construir novas ciclovias entre esses pontos')
+        $scope.pairs.splice(index_pair, 1)
 
   $scope.mount_path_geojson = (path) ->
     path.relationships.map (relation) ->

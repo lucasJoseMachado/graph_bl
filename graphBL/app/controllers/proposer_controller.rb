@@ -5,7 +5,7 @@ class ProposerController < ApplicationController
   end
 
   def add_bike_lane
-    if params[:path].present? && params[:path]['is_new_bike_lane']
+    if params[:path].present?
       Proposer.add_bike_lanes params[:path]['relationships']
     end
     render nothing: true

@@ -19,7 +19,7 @@ class PairPicker
       WITH DISTINCT a as a, b as b
         RETURN {origin: {id: a.id, score: a.score}, destination: {id: b.id, score: b.score}}
         ORDER BY (a.score + b.score) DESC
-        LIMIT 100")
+        LIMIT 200")
     .flatten
   end
 end

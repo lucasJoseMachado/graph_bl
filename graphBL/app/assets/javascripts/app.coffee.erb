@@ -1,6 +1,10 @@
-@graph_bl = angular.module('graph_bl', ['ngRoute', 'ngAnimate', 'ngResource', 'templates', 'angular-loading-bar'])
+@graph_bl = angular.module('graph_bl', ['ngRoute', 'ngAnimate', 'toastr', 'ngResource', 'templates', 'angular-loading-bar'])
 
 .config(['$routeProvider', ($routeProvider) ->
   $routeProvider
     .otherwise({templateUrl: "main.html", controller: 'MainCtrl'})
 ])
+
+.config( (toastrConfig) ->
+  angular.extend(toastrConfig, positionClass: 'toast-bottom-right')
+)
