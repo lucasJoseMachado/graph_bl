@@ -5,7 +5,7 @@ class PairPicker
         WHERE a.score <> 0
           AND c.cluster_id = a.cluster_id
       WITH DISTINCT a as a
-        MATCH (a)-[r]-(c:Point)
+        MATCH (a)-[r:Car]-(c:Point)
         WHERE c.cluster_id <> a.cluster_id OR c.cluster IS NULL
       WITH DISTINCT a as a
         MATCH (b)-[r:Bike]-(c:Point)
@@ -14,7 +14,7 @@ class PairPicker
             AND a.cluster_id <> b.cluster_id
             AND c.cluster_id = b.cluster_id
       WITH DISTINCT a as a, b as b
-        MATCH (b)-[r]-(c:Point)
+        MATCH (b)-[r:Car]-(c:Point)
         WHERE c.cluster_id <> b.cluster_id OR c.cluster IS NULL
       WITH DISTINCT a as a, b as b
         RETURN {origin: {id: a.id, score: a.score}, destination: {id: b.id, score: b.score}}
