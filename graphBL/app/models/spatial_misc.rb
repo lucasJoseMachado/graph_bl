@@ -1,4 +1,12 @@
 class SpatialMisc
+  def self.find_point_by_lat_lng point
+    point = GraphDatabase.execute_query("
+      START n=node:points('bbox:[#{point.lat}, #{point.lng}, #{point.lat}, #{point.lng}]')
+      RETURN id(n)
+      LIMIT 1
+    ")[0]
+  end
+
   def self.delete_intermediate_points
     # TODO deletar os pontos que estão apenas entre dois outros pontos, ou seja, pontos que não agregam ao modelo
   end

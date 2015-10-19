@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       post 'get_pairs'
       post 'propose'
       post 'add_bike_lane'
+      post 'change_edge_type'
     end
   end
 end

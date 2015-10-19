@@ -2,14 +2,13 @@
 create extension postgis_topology;
 SET search_path = topology,public;
 
--- select DropTopology('topologia');
-
-select CreateTopology('topologia', 4326, 0.020/100);
+select DropTopology('topologia');
+select CreateTopology('topologia', 4326, 0.008/100);
 alter table topologia.edge_data add column peso double precision;
 alter table topologia.edge_data alter column peso set default 1;
 
 --init topologia
-select ST_CreateTopoGeo('topologia', (select st_collect(geom_way) from hh_2po_4pgr));
+select ST_CreateTopoGeo('topologia', (select st_collect(geom_way) from at_2po_4pgr));
 
 --include ciclovias
 CREATE OR REPLACE FUNCTION inserir_todas_ciclovias_topologia() RETURNS void AS

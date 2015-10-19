@@ -5,6 +5,11 @@ class ProposerController < ApplicationController
   end
 
   def add_bike_lane
+    if params[:points].present?
+      @point_a = SpatialMisc.find_point_by_lat_lng params[:points][0]
+      @point_b = SpatialMisc.find_point_by_lat_lng params[:points][1]
+      params[:path] = PathPlanner.execute @point_a, @point_b
+    end
     if params[:path].present?
       Proposer.add_bike_lanes params[:path]['relationships']
     end
@@ -30,6 +35,11 @@ class ProposerController < ApplicationController
 
   def calculate_score
     Scorer.execute
+    render nothing: true
+  end
+
+  def change_edge_type
+    Edge.change_type(params[:edge])
     render nothing: true
   end
 end

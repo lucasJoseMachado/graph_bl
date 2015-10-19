@@ -1,16 +1,20 @@
-.form-group{"ng-if" => "!path", "ng-repeat" => "pair in pairs"}
+.form-group{"ng-repeat" => "pair in pairs"}
   %div.row
-    .col-xs-12
-      Ponto {{pair.origin.id}}
-      %span.text-info ({{pair.origin.score}})
-      ponto {{pair.destination.id}}
-      %span.text-info ({{pair.destination.score}})
-      %a.btn.btn-link.pull-right{"ng-click" => "show_path($index)"}
-        %i.fa.fa-eye.text-primary
-      %a.btn.btn-link.pull-right{"ng-if" => "pair.path", "ng-click" => "add_path($index)"}
-        %i.fa.fa-plus-square.text-primary
-      %a.btn.btn-link.pull-right{"ng-if" => "pair.path", "ng-click" => "pair.path = null; clear_current_path()"}
-        %i.fa.fa-minus-square.text-danger
-  %div.row{"ng-if" => "pair.path"}
-    .col-xs-12
-      %p > Distância: {{pair.path.total_length}}
+    .col-xs-12.form-group
+      .col-xs-3
+        Opção {{$index + 1}}
+      .col-xs-9
+        .col-xs-4.pull-right{"ng-if" => "!pair.path"}
+          %a.btn.btn-primary.btn-sm{"ng-click" => "show_path($index)"}
+            %i.fa.fa-eye
+              Ver
+        .col-xs-4.pull-right
+          %a.btn.btn-primary.btn-sm{"ng-if" => "pair.path", "ng-click" => "add_path($index)"}
+            %i.fa.fa-plus-square
+              Adicionar
+        .col-xs-4.pull-right
+          %a.btn.btn-danger.btn-sm{"ng-if" => "pair.path", "ng-click" => "pair.path = null; clear_current_path()"}
+            %i.fa.fa-minus-square
+              Cancelar
+    .col-xs-12.pull-left{"ng-if" => "pair.path"}
+      %p > Distância total do caminho: {{pair.path.total_length}}

@@ -10,18 +10,40 @@ angular.module('graph_bl')
     $scope.mapInstance.setView start_point, start_zoom
     $scope.geoJson = L.geoJson().addTo($scope.mapInstance);
     $scope.add_osm_layer()
+    $scope.addClickHandler()
+
+  $scope.addClickHandler = ->
+    $scope.mapInstance.on 'contextmenu', (e) ->
+      point = e.latlng
+      layer.on 'dblclick', (e) ->
+        $scope.user_add_path_points ||= []
+        $scope.user_add_path_points.push point
+        $scope.user_add_path_points = $.unique($scope.user_add_path_points)
+        if $scope.user_add_path_points.length == 2
+          $http.post("/proposer/add_bike_lane", points: $scope.user_add_path_points)
+            .success (data) ->
+              #TODO adicionar toastr para notificar usuário
+          $scope.user_add_path_points = []
+      layer.on 'contextmenu', (e) ->
+        if $scope.user_add_path_points
+          $scope.user_add_path_points.pop()
 
   $scope.reloadPoints = ->
     $http.get("/layers/point.json").success (data) ->
       $scope.drawPoints(data)
+      if $scope.bike_layer
+        $scope.mapInstance.removeLayer($scope.bike_layer)
+        $scope.mapInstance.addLayer($scope.bike_layer)
 
   $scope.reloadBikeLayer = ->
     $http.get("/layers/bike.json").success (data) ->
-      $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'Bike'})
+      if $scope.bike_layer
+        $scope.mapInstance.removeLayer($scope.bike_layer)
+      $scope.bike_layer = $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'Bike'})
 
   $scope.add_osm_layer = ->
     osmTile = new L.tileLayer 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    osmTile.addTo $scope.mapInstance
+    osmTile.addTo($scope.mapInstance)
 
   $scope.drawLayer = (geometryArray, options={geometryType: 'LineString', layerType: 'Bike'}) ->
     json_layer = $scope.parseArrayToGeoJsonLayer( geometryArray, options.geometryType )
@@ -31,16 +53,23 @@ angular.module('graph_bl')
     L.geoJson(
       json_layer,
       style: $scope.layerStyle( layerType ),
-      pointToLayer: ( feature, latlng ) ->
-        L.circleMarker( latlng )
+      pointToLayer: (( feature, latlng ) -> L.circleMarker( latlng )),
+      onEachFeature: ((feature, layer) ->
+        if feature.type == "LineString"
+          layer.on 'dblclick', (e) ->
+            $http.post("/proposer/change_edge_type", edge: e.target.feature.geometry.id)
+            #TODO adicionar toastr para informar o usuário
+            $scope.reloadBikeLayer()
+      )
     ).addTo($scope.mapInstance)
 
-  $scope.parseArrayToGeoJsonLayer = (geometryArray, geometryType) ->
+  $scope.parseArrayToGeoJsonLayer = (geometryArray, geometryType, layerType) ->
     json_layer = []
     for value in geometryArray
       json_layer.push {
         type: geometryType,
-        coordinates: value.geometry
+        coordinates: value.geometry,
+        id: value.id
       }
     json_layer
 
