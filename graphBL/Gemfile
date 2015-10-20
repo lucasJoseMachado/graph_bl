@@ -43,3 +43,6 @@ gem 'font-awesome-sass'
 
 #database
 gem 'neography'
+
+#deploy
+gem "passenger"
