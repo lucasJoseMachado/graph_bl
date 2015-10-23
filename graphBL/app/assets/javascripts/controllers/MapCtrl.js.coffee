@@ -1,8 +1,6 @@
 angular.module('graph_bl')
 
 .controller('MapCtrl', ($scope, $http) ->
-  $scope.pointLayers = []
-
   $scope.init = ->
     $scope.mapInstance = new L.Map 'map'
     start_point = [-26.29918, -48.82080]
@@ -28,18 +26,9 @@ angular.module('graph_bl')
         if $scope.user_add_path_points
           $scope.user_add_path_points.pop()
 
-  $scope.reloadPoints = ->
-    $http.get("/layers/point.json").success (data) ->
-      $scope.drawPoints(data)
-      if $scope.bike_layer
-        $scope.mapInstance.removeLayer($scope.bike_layer)
-        $scope.mapInstance.addLayer($scope.bike_layer)
-
   $scope.reloadBikeLayer = ->
     $http.get("/layers/bike.json").success (data) ->
-      if $scope.bike_layer
-        $scope.mapInstance.removeLayer($scope.bike_layer)
-      $scope.bike_layer = $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'Bike'})
+      $scope.drawLines(data)
 
   $scope.add_osm_layer = ->
     osmTile = new L.tileLayer 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -53,7 +42,6 @@ angular.module('graph_bl')
     L.geoJson(
       json_layer,
       style: $scope.layerStyle( layerType ),
-      pointToLayer: (( feature, latlng ) -> L.circleMarker( latlng )),
       onEachFeature: ((feature, layer) ->
         if feature.type == "LineString"
           layer.on 'dblclick', (e) ->
@@ -94,14 +82,14 @@ angular.module('graph_bl')
       fillOpacity: 1
     }
 
-  $scope.clearPointLayers = () ->
-    if $scope.pointLayers.length > 0
-      for layer in $scope.pointLayers
+  $scope.clearLineLayers = () ->
+    if $scope.lineLayers
+      for layer in $scope.lineLayers
         $scope.mapInstance.removeLayer(layer)
-    $scope.pointLayers = []
+    $scope.lineLayers = []
 
-  $scope.drawPoints = (points) ->
-    $scope.clearPointLayers()
-    for cluster_color of points
-      $scope.pointLayers = $scope.pointLayers.concat $scope.drawLayer(points[cluster_color], {geometryType: 'Point', layerType: cluster_color})
+  $scope.drawLines = (lines) ->
+    $scope.clearLineLayers()
+    for cluster_color of lines
+      $scope.lineLayers = $scope.lineLayers.concat $scope.drawLayer(lines[cluster_color], {geometryType: 'LineString', layerType: cluster_color || 'Bike'})
 )

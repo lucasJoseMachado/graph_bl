@@ -6,7 +6,6 @@ angular.module('graph_bl')
 
     $scope.init()
     $scope.reloadBikeLayer()
-    $scope.reloadPoints()
     $scope.processing = false
     $scope.params = {
       clusters: 2,
@@ -17,13 +16,13 @@ angular.module('graph_bl')
     $scope.clusterer = (min_clusters) ->
       $scope.processing = true
       $http.post("/proposer/clusterer.json", min_clusters: min_clusters || 0).success (data) ->
-        $scope.reloadPoints()
+        $scope.reloadBikeLayer()
         $scope.processing = false
 
     $scope.calculate_score = ->
       $scope.processing = true
       $http.post("/proposer/calculate_score.json").success (data) ->
-        $scope.reloadPoints()
+        $scope.reloadBikeLayer()
         $scope.processing = false
 
     $scope.get_pairs = () ->
@@ -35,7 +34,7 @@ angular.module('graph_bl')
     $scope.propose = ->
       $scope.processing = true
       $http.post("/proposer/propose.json", $scope.params).success (data) ->
-        $scope.reloadPoints()
+        $scope.reloadBikeLayer()
         $scope.pairs = data
         $scope.processing = false
 )

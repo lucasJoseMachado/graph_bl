@@ -9,16 +9,6 @@ class LayersController < ApplicationController
     render json: @layer
   end
 
-  def point
-    @layer = GraphDatabase.execute_query(
-      <<-EOF
-      MATCH (a:Point)-[r:Bike]-(c:Point)
-      RETURN distinct id(a), [a.lat, a.lon], a.cluster_color
-      EOF
-    ).map{ |point| { geometry: point[1], cluster_color: point[2], id: point[0] } }.group_by{ |v| v[:cluster_color] }
-    render json: @layer
-  end
-
   def index
   end
 
@@ -27,8 +17,8 @@ class LayersController < ApplicationController
       @layer = GraphDatabase.execute_query(
         <<-EOF
           MATCH (start:Point)-[track:#{params[:action].camelize}]->(end:Point)
-          RETURN distinct id(track), track.geometry
+          RETURN distinct id(track), track.geometry, COALESCE(start.cluster_color, end.cluster_color)
         EOF
-      ).map{ |track| { geometry: JSON.parse(track[1]), id: track[0] } }
+      ).map{ |track| { geometry: JSON.parse(track[1]), cluster_color: track[2], id: track[0] } }.group_by{ |v| v[:cluster_color] }
     end
 end
