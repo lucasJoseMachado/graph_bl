@@ -1,6 +1,6 @@
 class PairPicker
   def self.execute
-    pairs = GraphDatabase.execute_query("#{self.pair_select_query} LIMIT 200").flatten
+    pairs = GraphDatabase.execute_query("#{self.pair_select_query} LIMIT 1000").flatten
     # pairs.uniq do |pair|
     #   [ pair['origin']['cluster_id'], pair['destination']['cluster_id'] ]
     # end

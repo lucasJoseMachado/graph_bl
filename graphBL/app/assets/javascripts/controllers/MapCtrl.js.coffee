@@ -64,9 +64,9 @@ angular.module('graph_bl')
   $scope.layerStyle = (type) ->
     color = null
     fillColor = null
-    if type == "Car"
-      color = "#ff7800"
-      fillColor = "#0000ff"
+    if type == "NewBikeLane"
+      color = "#000000"
+      fillColor = "#000000"
     else if type == "Bike"
       color = "#0098ff"
       fillColor = "#ff0000"
