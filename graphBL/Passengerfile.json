@@ -1,0 +1,6 @@
+{
+  "environment": "development",
+  "port": 3010,
+  "daemonize": true,
+  "user": "machado"
+}
