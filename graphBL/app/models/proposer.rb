@@ -1,16 +1,12 @@
 class Proposer
   def self.execute options={}
-    options[:clusters] ||= 2
-    options[:scorer] ||= true
-    options[:pairs_to_pick] ||= 20
-    Cluster.execute(options[:clusters])
-    Scorer.execute if options[:scorer]
-    pairs = PairPicker.execute
-    pairs.each do |pair|
-      pair['path'] = PathPlanner.execute(pair['origin']['id'], pair['destination']['id'])
+    while Rails.cache.read("proposing") do sleep 30 end
+    Rails.cache.fetch("propose") do
+      Rails.cache.write("proposing", true)
+      propose = simple_execute(options)
+      Rails.cache.delete("proposing")
+      propose
     end
-    pairs.delete_if {|pair| pair['path'].nil?}
-    pairs = pairs.uniq {|pair| pair['path']}
   end
 
   def self.add_bike_lanes relations
@@ -28,6 +24,22 @@ class Proposer
           "
         end
       GraphDatabase.end_transaction
+      Rails.cache.delete("propose")
     end
   end
+
+  private
+    def self.simple_execute options
+      options[:clusters] ||= 2
+      options[:scorer] ||= true
+      options[:pairs_to_pick] ||= 20
+      Cluster.execute(options[:clusters])
+      Scorer.execute if options[:scorer]
+      pairs = PairPicker.execute
+      pairs.each do |pair|
+        pair['path'] = PathPlanner.execute(pair['origin']['id'], pair['destination']['id'])
+      end
+      pairs.delete_if {|pair| pair['path'].nil?}
+      pairs = pairs.uniq {|pair| pair['path']}
+    end
 end

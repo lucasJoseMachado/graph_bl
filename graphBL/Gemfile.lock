@@ -84,6 +84,7 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     connection_pool (2.2.0)
+    dalli (2.7.4)
     debug_inspector (0.0.2)
     erubis (2.7.0)
     excon (0.45.4)
@@ -228,6 +229,8 @@ DEPENDENCIES
   bower-rails
   byebug
   coffee-rails
+  connection_pool
+  dalli
   font-awesome-sass
   haml
   haml-rails

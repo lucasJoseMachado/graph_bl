@@ -65,8 +65,14 @@ angular.module('graph_bl')
     color = null
     fillColor = null
     if type == "NewBikeLane"
-      color = "#000000"
-      fillColor = "#000000"
+      return {
+        color: "#000000",
+        fillColor: "#000000",
+        weight: 12,
+        radius: 1,
+        opacity: 0.75,
+        fillOpacity: 0
+      }
     else if type == "Bike"
       color = "#0098ff"
       fillColor = "#ff0000"
