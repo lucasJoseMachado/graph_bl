@@ -1,6 +1,6 @@
 class Proposer
   def self.execute options={}
-    while Rails.cache.read("proposing") do sleep 30 end
+    while Rails.cache.read("proposing") do sleep 15 end
     Rails.cache.fetch("propose") do
       Rails.cache.write("proposing", true)
       propose = simple_execute(options)
