@@ -36,10 +36,14 @@ class Proposer
       Cluster.execute(options[:clusters])
       Scorer.execute if options[:scorer]
       pairs = PairPicker.execute
+      results = []
       pairs.each do |pair|
         pair['path'] = PathPlanner.execute(pair['origin']['id'], pair['destination']['id'])
+        if pair['path'].present? && results.all? {|x| x['path'] != pair['path']}
+          results << pair
+          break if results.count > 49
+        end
       end
-      pairs.delete_if {|pair| pair['path'].nil?}
-      pairs = pairs.uniq {|pair| pair['path']}
+      results
     end
 end
