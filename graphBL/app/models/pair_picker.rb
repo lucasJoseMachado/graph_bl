@@ -1,9 +1,6 @@
 class PairPicker
   def self.execute
     pairs = GraphDatabase.execute_query("#{self.pair_select_query} LIMIT 1000").flatten
-    # pairs.uniq do |pair|
-    #   [ pair['origin']['cluster_id'], pair['destination']['cluster_id'] ]
-    # end
   end
 
   private
@@ -24,7 +21,7 @@ class PairPicker
         MATCH (b)-[r:Car]-(c:Point)
         WHERE c.cluster_id <> b.cluster_id OR c.cluster IS NULL
       WITH DISTINCT a as a, b as b
-        RETURN {origin: {id: a.id, cluster_id: a.cluster_id, score: a.score}, destination: {id: b.id, cluster_id: b.cluster_id, score: b.score}}
+        RETURN {origin: {id: a.id, score: a.score}, destination: {id: b.id, score: b.score}}
         ORDER BY (a.score + b.score) DESC"
     end
 end
