@@ -1,10 +1,22 @@
-.row.form-group
-  .col-xs-12
-    .col-xs-8.text-center
-      %p
-        &nbsp
-      %button.btn.btn-primary{"ng-click" => "propose()", "ng-disabled" => "processing"} Obter propostas
-    .col-xs-4.pull-right
+.col-xs-12.form-group{"ng-if" => "global_options.mode == 'analytic'"}
+  .col-xs-10
+    .col-xs-5
       %p
         %strong Quantidade mínima de agrupamentos
       %input.form-control{type: "number", "ng-model" => "params.clusters", min: 2}
+    .col-xs-7
+      %p
+        &nbsp
+      %button.btn.btn-primary{"ng-click" => "propose()", "ng-disabled" => "processing"} Obter propostas
+  .col-xs-2.text-right
+    %p
+      &nbsp
+    %button.btn.btn-danger{"ng-click" => "global_options.mode = 'undo'", "ng-disabled" => "processing"} Restaurar malha
+.col-xs-12.form-group{"ng-if" => "global_options.mode == 'undo'"}
+  .col-xs-12
+    %h1.text-danger.text-center
+      %strong Você realmente deseja restaurar o estado inicial da malha viária? Com isso, todas as informações geradas pelo sistema serão perdidas.
+  .col-xs-6.text-center
+    %button.btn.btn-primary.btn-lg{"ng-click" => "global_options.mode = 'analytic'", "ng-disabled" => "processing"} Voltar
+  .col-xs-6.text-center
+    %button.btn.btn-danger.btn-lg{"ng-click" => "restoreBackup(); global_options.mode = 'analytic'", "ng-disabled" => "processing"} Confirmar

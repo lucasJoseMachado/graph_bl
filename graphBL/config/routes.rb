@@ -7,6 +7,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :backups do
+    collection do
+      get 'restore'
+    end
+  end
+
   resources :proposer do
     collection do
       post 'clusterer'

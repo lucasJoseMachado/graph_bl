@@ -4,6 +4,7 @@ angular.module('graph_bl')
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
     angular.extend(this, $controller('PathCtrl', $scope: $scope, $http: $http, toastr))
 
+    $scope.global_options = {mode: 'analytic'}
     $scope.init()
     $scope.reloadBikeLayer()
     $scope.processing = false
@@ -12,6 +13,13 @@ angular.module('graph_bl')
       scorer: true,
       paths_to_calculate: 0
     }
+
+    $scope.restoreBackup = () ->
+      $scope.processing = true
+      $scope.pairs = null
+      $http.get("/backups/restore").success (data) ->
+        $scope.reloadBikeLayer()
+        $scope.processing = false
 
     $scope.clusterer = (min_clusters) ->
       $scope.processing = true
