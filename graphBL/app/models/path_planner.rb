@@ -7,4 +7,12 @@ class PathPlanner
     end
     path
   end
+
+  def self.simple_path point_a, point_b
+    path = GraphDatabase.execute_query("START source=node(#{point_a}), destination=node(#{point_b})
+      MATCH p = shortestPath(source-[:Bike|:Car*]-destination)
+      RETURN extract(n IN relationships(p)| {id: id(n), geometry: n.geometry})")
+    path = path.flatten if path.present?
+    {'relationships' => path}
+  end
 end

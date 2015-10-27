@@ -11,20 +11,20 @@ angular.module('graph_bl')
     $scope.addClickHandler()
 
   $scope.addClickHandler = ->
-    $scope.mapInstance.on 'contextmenu', (e) ->
+    $scope.user_add_path_points = []
+    $scope.mapInstance.on 'click', (e) ->
       point = e.latlng
-      layer.on 'dblclick', (e) ->
-        $scope.user_add_path_points ||= []
-        $scope.user_add_path_points.push point
-        $scope.user_add_path_points = $.unique($scope.user_add_path_points)
-        if $scope.user_add_path_points.length == 2
-          $http.post("/proposer/add_bike_lane", points: $scope.user_add_path_points)
-            .success (data) ->
-              #TODO adicionar toastr para notificar usuário
-          $scope.user_add_path_points = []
-      layer.on 'contextmenu', (e) ->
-        if $scope.user_add_path_points
-          $scope.user_add_path_points.pop()
+      $scope.user_add_path_points.push point
+      $scope.user_add_path_points = $.unique($scope.user_add_path_points)
+      if $scope.user_add_path_points.length == 2
+        $http.post("/proposer/add_bike_lane", points: $scope.user_add_path_points)
+          .success (data) ->
+            $scope.reloadBikeLayer()
+            #TODO adicionar toastr para notificar usuário
+        $scope.user_add_path_points = []
+    $scope.mapInstance.on 'contextmenu', (e) ->
+      if $scope.user_add_path_points
+        $scope.user_add_path_points.pop()
 
   $scope.reloadBikeLayer = ->
     $http.get("/layers/bike.json").success (data) ->

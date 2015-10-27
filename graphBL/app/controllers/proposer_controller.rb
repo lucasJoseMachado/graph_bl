@@ -6,9 +6,11 @@ class ProposerController < ApplicationController
 
   def add_bike_lane
     if params[:points].present?
-      @point_a = SpatialMisc.find_point_by_lat_lng params[:points][0]
-      @point_b = SpatialMisc.find_point_by_lat_lng params[:points][1]
-      params[:path] = PathPlanner.execute @point_a, @point_b
+      @point_a = SpatialMisc.find_point_by_lat_lng(params[:points][0])
+      @point_b = SpatialMisc.find_point_by_lat_lng(params[:points][1])
+      if @point_a.present? && @point_b.present? && @point_a != @point_b
+        params[:path] = PathPlanner.simple_path(@point_a, @point_b)
+      end
     end
     if params[:path].present?
       Proposer.add_bike_lanes params[:path]['relationships']

@@ -1,10 +1,10 @@
 class SpatialMisc
   def self.find_point_by_lat_lng point
-    point = GraphDatabase.execute_query("
-      START n=node:points('bbox:[#{point.lat}, #{point.lng}, #{point.lat}, #{point.lng}]')
-      RETURN id(n)
-      LIMIT 1
-    ")[0]
+    point['lon'] ||= point['lng']
+    result = GraphDatabase.execute_query("
+      START n=node:points('withinDistance:[#{point['lon']}, #{point['lat']}, 0.1]')
+      RETURN n.id
+      LIMIT 1")[0][0] rescue nil
   end
 
   def self.delete_intermediate_points
