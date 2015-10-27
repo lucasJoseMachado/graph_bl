@@ -4,6 +4,7 @@
 /graphBL/neo4j/data
 /graphBL/gremlin
 /graphBL/.bundle
+/graphBL/backups/*
 
 
 /neo4j_extension/bin

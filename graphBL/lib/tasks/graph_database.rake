@@ -1,36 +1,17 @@
-namespace :extension do
-  task :compile => :environment do
-    Dir.chdir('../neo4j_extension'){
-      system "mvn clean package"
-    }
-    Dir.chdir('../'){
-      system "cp neo4j_extension/target/unmanaged-extension-template-1.0.jar graphBL/neo4j/plugins/"
-    }
+namespace :db do
+  task :create_backup => :environment do
     system "rake neo4j:stop"
+    system "rm -rf backups/"
+    system "mkdir backups"
+    system "cp -r neo4j/data backups/"
     system "rake neo4j:start"
   end
-end
 
-namespace :db do
-  task :cache_distances => :environment do
-    time = Benchmark.realtime do
-      points = GraphDatabase.execute_query("MATCH (point:Point) return distinct id(point)")
-        .map{|v| v[0]}
-        .each_with_index do |point_id, index|
-          GraphDatabase.begin_transaction
-          puts "point #{index}..." if index % 100 == 0
-          GraphDatabase.in_transaction <<-EOF
-            MATCH (a:Point), (b:Point)
-            WHERE id(a) = #{point_id}
-              AND id(a) > id(b)
-            CREATE (a)-[distance:Distance{
-              value: SQRT( (a.lat-b.lat)*(a.lat-b.lat) + (a.lon-b.lon)*(a.lon-b.lon) )
-            }]->(b)
-          EOF
-          GraphDatabase.end_transaction
-      end
-    end
-    puts "Done in #{time.seconds} seconds"
+  task :restore_backup => :environment do
+    system "rake neo4j:stop"
+    system "rm -rf neo4j/data"
+    system "cp -r backups/data neo4j/"
+    system "rake neo4j:start"
   end
 
   task :import => :environment do
@@ -63,6 +44,12 @@ namespace :db do
           next
         end
       end
+      #just cleaning
+      GraphDatabase.begin_transaction
+        GraphDatabase.in_transaction "MATCH A-[R1:Bike]-B, A-[R2:Car]-B DELETE R2"
+        GraphDatabase.in_transaction "MATCH A-[R1:Bike]-B, A-[R2:Bike]-B WHERE id(R1) <> id(R2) DELETE R2"
+        GraphDatabase.in_transaction "MATCH A-[R1:Car]-B, A-[R2:Car]-B WHERE id(R1) <> id(R2) DELETE R2"
+      GraphDatabase.end_transaction
     end
     puts "Done in #{time.seconds} seconds"
   end
@@ -72,8 +59,8 @@ namespace :db do
   end
 
   task :setup => :environment do
-    # turn_spatial unify_points cache_distances
-    %w(clean import).each do |command|
+    # unify_points
+    %w(clean import turn_spatial).each do |command|
       puts "calling #{command}..."
       Rake::Task["db:#{command}"].invoke
     end
