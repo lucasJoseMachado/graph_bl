@@ -32,7 +32,7 @@ class Importer
       start_node = track["start_node"]
       end_node   = track["end_node"]
       track_type = track["road_type"]
-      length     = track["length"]*10000
+      length     = track["length"]*100000
       descriptor = JSON.parse track["geom"]
       geometry   = descriptor["coordinates"]
       if start_node == end_node

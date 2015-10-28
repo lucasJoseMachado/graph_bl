@@ -17,7 +17,7 @@ namespace :db do
 
   task :unify_points => :environment do
     time = Benchmark.realtime do
-      points = GraphDatabase.execute_query("MATCH (point:Point) return distinct id(point), point.lat, point.lon")
+      points = GraphDatabase.execute_query("MATCH (point:Point)-[r:Bike]-() return distinct id(point), point.lat, point.lon")
         .map{ |v| { id: v[0], lat: v[1], lon: v[2] } }
       points.each_with_index do |point, index|
         puts "point #{index}..." if index % 1000 == 0
