@@ -19,22 +19,22 @@ namespace :db do
     time = Benchmark.realtime do
       points = GraphDatabase.execute_query("MATCH (point:Point)-[r:Bike]-() return distinct id(point), point.lat, point.lon")
         .map{ |v| { id: v[0], lat: v[1], lon: v[2] } }
-      points.each_with_index do |point, index|
-        puts "point #{index}..." if index % 1000 == 0
-        begin
-          ["Bike", "Car"].each { |relation_type| SpatialMisc.connect_through_proximity_points(point, relation_type) }
-          SpatialMisc.delete_proximity_points(point)
-        rescue
-          print "F"
-          next
-        end
-      end
-      #just cleaning
       GraphDatabase.begin_transaction
-        GraphDatabase.in_transaction "MATCH A-[R1:Bike]-B, A-[R2:Car]-B DELETE R2"
-        GraphDatabase.in_transaction "MATCH A-[R1:Bike]-B, A-[R2:Bike]-B WHERE id(R1) <> id(R2) DELETE R2"
-        GraphDatabase.in_transaction "MATCH A-[R1:Car]-B, A-[R2:Car]-B WHERE id(R1) <> id(R2) DELETE R2"
+        points.each_with_index do |point, index|
+          puts "point #{index}..." if index % 100 == 0
+          begin
+            ["Bike", "Car"].each { |relation_type| SpatialMisc.connect_through_proximity_points(point, relation_type) }
+            SpatialMisc.delete_proximity_points(point)
+          rescue => e
+            logger.error e.message
+            e.backtrace.each { |line| logger.error line }
+          end
+        end
       GraphDatabase.end_transaction
+      #just cleaning
+      GraphDatabase.execute_query "MATCH A-[R1:Bike]-B, A-[R2:Car]-B DELETE R2"
+      GraphDatabase.execute_query "MATCH A-[R1:Bike]-B, A-[R2:Bike]-B WHERE id(R1) <> id(R2) DELETE R2"
+      GraphDatabase.execute_query "MATCH A-[R1:Car]-B, A-[R2:Car]-B WHERE id(R1) <> id(R2) DELETE R2"
     end
     puts "Done in #{time.seconds} seconds"
   end
@@ -44,8 +44,7 @@ namespace :db do
   end
 
   task :setup => :environment do
-    # unify_points
-    %w(clean import turn_spatial).each do |command|
+    %w(clean import turn_spatial unify_points).each do |command|
       puts "calling #{command}..."
       Rake::Task["db:#{command}"].invoke
     end

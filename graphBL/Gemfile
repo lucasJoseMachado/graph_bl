@@ -11,9 +11,6 @@ gem 'angular-rails-templates'
 #javascript
 gem 'rails-assets-leaflet'
 
-#background
-gem 'sidekiq'
-
 #basic
 gem 'rails'
 gem 'uglifier'

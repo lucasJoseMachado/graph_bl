@@ -20,19 +20,20 @@ class SpatialMisc
   end
 
   def self.connect_through_proximity_points point, relation_type
-    GraphDatabase.in_transaction "START proximity_point = node:points('withinDistance:[#{point[:lat]}, #{point[:lon]}, 0.012]') \
+    query = "START proximity_point = node:points('withinDistance:[#{point[:lat]}, #{point[:lon]}, 0.004]') \
       WHERE id(proximity_point) <> #{point[:id]} \
       WITH proximity_point as proximity_point \
-        MATCH (point:Point)
-        WHERE id(point) = #{point[:id]}
+        MATCH (point:Point) \
+        WHERE id(point) = #{point[:id]} \
       WITH point as point, proximity_point as proximity_point \
-        MATCH (proximity_point)-[old_relation:#{relation_type}]-(related_node), \
+        MATCH (proximity_point)-[old_relation:#{relation_type}]-(related_node) \
         WHERE id(point) <> id(related_node) \
         CREATE (point)-[new_relation:#{relation_type}{geometry: old_relation.geometry}]->(related_node)"
+    GraphDatabase.in_transaction(query)
   end
 
   def self.delete_proximity_points point
-    GraphDatabase.in_transaction "START proximity_point = node:points('withinDistance:[#{point[:lat]}, #{point[:lon]}, 0.012]') \
+    GraphDatabase.in_transaction "START proximity_point = node:points('withinDistance:[#{point[:lat]}, #{point[:lon]}, 0.004]') \
       WHERE id(proximity_point) <> #{point[:id]} \
       WITH proximity_point as proximity_point \
         OPTIONAL MATCH (proximity_point)-[old_relation]-(related_node) \

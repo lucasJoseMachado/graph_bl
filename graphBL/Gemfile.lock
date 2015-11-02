@@ -75,6 +75,7 @@ GEM
       timers (>= 4.1.1)
     celluloid-supervision (0.20.5)
       timers (>= 4.1.1)
+    choice (0.2.0)
     coderay (1.1.0)
     coffee-rails (4.1.0)
       coffee-script (>= 2.2.0)
@@ -162,6 +163,11 @@ GEM
       activesupport (>= 4.2.0.beta, < 5.0)
       nokogiri (~> 1.6.0)
       rails-deprecated_sanitizer (>= 1.0.1)
+    rails-erd (1.4.4)
+      activerecord (>= 3.2)
+      activesupport (>= 3.2)
+      choice (~> 0.2.0)
+      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
     railties (4.2.4)
@@ -177,6 +183,7 @@ GEM
       redis (~> 3.0, >= 3.0.4)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    ruby-graphviz (1.2.2)
     ruby_parser (3.7.1)
       sexp_processor (~> 4.1)
     rubyzip (1.1.7)
@@ -242,6 +249,7 @@ DEPENDENCIES
   quiet_assets
   rails
   rails-assets-leaflet
+  rails-erd
   responders
   sass-rails
   sdoc
