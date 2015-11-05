@@ -1,4 +1,7 @@
-%div{"ng-class" => "{'col-xs-8': pairs, 'left-panel': pairs, 'col-xs-12': !pairs}"}
+%div{"ng-show" => "graph_bl_secret != 'ciclovias_bdes_2015'"}
+  .col-xs-12.form-group
+    %input.form-control{type: 'text', "ng-model" => "graph_bl_secret", placeholder: "Senha de acesso"}
+%div{"ng-show" => "graph_bl_secret == 'ciclovias_bdes_2015'", "ng-class" => "{'col-xs-8': pairs, 'left-panel': pairs, 'col-xs-12': !pairs}"}
   .row.form-group{"ng-include" => "'form_actions.html'"}
   .row.form-group
     .col-xs-12.text-center
