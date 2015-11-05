@@ -13,8 +13,10 @@ angular.module('graph_bl')
     $scope.add_osm_layer()
     $http.get("/layers/bike.json").success (data) ->
       $scope.clearLineLayers()
+      $scope.onlyRead = true
       for cluster_color of data
         $scope.lineLayers = $scope.lineLayers.concat $scope.drawLayer(data[cluster_color], {geometryType: 'LineString', layerType: 'FF0000'})
+      $scope.onlyRead = false
 
     $scope.saveSuggestion = (suggestion) ->
       $http.post("/user_suggestions.json", user_suggestion: $scope.suggestion).success (data) ->

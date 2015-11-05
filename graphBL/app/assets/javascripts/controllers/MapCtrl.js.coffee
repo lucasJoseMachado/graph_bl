@@ -43,7 +43,7 @@ angular.module('graph_bl')
       json_layer,
       style: $scope.layerStyle( layerType ),
       onEachFeature: ((feature, layer) ->
-        if feature.type == "LineString"
+        if feature.type == "LineString" && !$scope.onlyRead
           layer.on 'dblclick', (e) ->
             $http.post("/proposer/change_edge_type", edge: e.target.feature.geometry.id)
             #TODO adicionar toastr para informar o usuário
