@@ -11,3 +11,5 @@
 /neo4j_extension/target
 *.class
 /.metadata
+
+*.sqlite3

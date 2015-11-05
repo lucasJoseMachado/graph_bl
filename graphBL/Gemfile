@@ -21,7 +21,7 @@ gem 'sdoc'
 gem 'tzinfo-data', platforms: [:mingw, :mswin]
 gem 'sprockets', '2.12.3'
 gem 'responders'
-# gem 'sqlite3'
+gem 'sqlite3'
 
 #cache
 gem 'dalli'

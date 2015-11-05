@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :user_suggestions
   root 'layers#index'
   resources :layers do
     collection do
