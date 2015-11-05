@@ -17,7 +17,7 @@
     .col-xs-12.form-group
       %input.form-control{type: 'text', "ng-model" => "suggestion.group", placeholder: "Grupo / movimento"}
     .col-xs-12.form-group
-      %textarea{rows: "8", cols: "50", "ng-model" => "suggestion.suggestion", placeholder: "Sugestão"}
+      %textarea{rows: "8", cols: "42", "ng-model" => "suggestion.suggestion", placeholder: "Sugestão"}
     .col-xs-12.form-group
       %a.btn.btn-primary.btn-lg{"ng-click" => "saveSuggestion()", "ng-disabled" => "!suggestion.suggestion"}
         %i.fa.fa-save
