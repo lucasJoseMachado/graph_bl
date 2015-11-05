@@ -4,6 +4,9 @@ angular.module('graph_bl')
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
     angular.extend(this, $controller('PathCtrl', $scope: $scope, $http: $http, toastr))
 
+    $scope.graph_bl_secret = ''
+    $scope.system_secret = 'ciclovias_bdes_2015'
+
     $scope.global_options = {mode: 'analytic'}
     $scope.init()
     $scope.reloadBikeLayer()

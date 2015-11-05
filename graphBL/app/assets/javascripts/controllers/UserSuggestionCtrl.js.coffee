@@ -4,7 +4,6 @@ angular.module('graph_bl')
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
 
     $scope.suggestion = {}
-
     $scope.mapInstance = new L.Map 'mapOnlyRead'
     start_point = [-26.29918, -48.82080]
     start_zoom = 12
@@ -24,6 +23,9 @@ angular.module('graph_bl')
 )
 
 .controller('UserSuggestionCtrl', ($scope, $http, $controller, toastr) ->
+    $scope.graph_bl_secret = ''
+    $scope.system_secret = 'ciclovias_bdes_2015'
+
     $http.get('/user_suggestions.json').success (data) ->
       $scope.suggestions = data
 
