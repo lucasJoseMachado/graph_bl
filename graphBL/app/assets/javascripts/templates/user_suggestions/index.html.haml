@@ -1,0 +1,23 @@
+.col-xs-12
+  %h1.text-center.form-group
+    %strong= "Lista de sugestões para a malha cicloviária de Joinville"
+  %table.table.table-fixed
+    %thead
+      %tr
+        %th= "Nome"
+        %th= "Email"
+        %th= "Telefone"
+        %th= "Grupo / movimento"
+        %th= "Sugestão"
+        %th
+    %tbody{"ng-repeat" => "suggestion in suggestions"}
+      %tr
+        %td {{suggestion.name}}
+        %td {{suggestion.email}}
+        %td {{suggestion.phone}}
+        %td {{suggestion.group}}
+        %td {{suggestion.suggestion}}
+        %td
+          %a.btn.btn-danger{"ng-click" => "destroySuggestion(suggestion, $index)"}
+            %i.fa.fa-trash
+            = "Deletar"

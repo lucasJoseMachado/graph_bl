@@ -1,0 +1,24 @@
+.col-xs-12
+  %h1.text-center.form-group
+    %strong= "Sugestões para a malha cicloviária de Joinville"
+  .col-xs-8
+    .row.form-group
+      .col-xs-12.text-center
+        #map
+  .col-xs-4
+    %h1.text-center= "Contribua você também"
+    %h4.text-center= "preencha a sua sugestão"
+    .col-xs-12.form-group
+      %input.form-control{type: 'text', "ng-model" => "suggestion.name", placeholder: "Nome"}
+    .col-xs-12.form-group
+      %input.form-control{type: 'text', "ng-model" => "suggestion.email", placeholder: "Email"}
+    .col-xs-12.form-group
+      %input.form-control{type: 'text', "ng-model" => "suggestion.phone", placeholder: "Telefone"}
+    .col-xs-12.form-group
+      %input.form-control{type: 'text', "ng-model" => "suggestion.group", placeholder: "Grupo / movimento"}
+    .col-xs-12.form-group
+      %textarea{rows: "8", cols: "50", "ng-model" => "suggestion.suggestion", placeholder: "Sugestão"}
+    .col-xs-12.form-group
+      %a.btn.btn-primary.btn-lg{"ng-click" => "saveSuggestion()", "ng-disabled" => "!suggestion.suggestion"}
+        %i.fa.fa-save
+        = "Enviar"
