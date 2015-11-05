@@ -5,7 +5,7 @@ angular.module('graph_bl')
 
     $scope.suggestion = {}
 
-    $scope.mapInstance = new L.Map 'map'
+    $scope.mapInstance = new L.Map 'mapOnlyRead'
     start_point = [-26.29918, -48.82080]
     start_zoom = 12
     $scope.mapInstance.setView start_point, start_zoom
