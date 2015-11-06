@@ -1,5 +1,5 @@
 {
-  "environment": "development",
+  "environment": "production",
   "port": 3010,
   "daemonize": true,
   "user": "machado"

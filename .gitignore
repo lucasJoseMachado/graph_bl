@@ -13,3 +13,5 @@
 /.metadata
 
 *.sqlite3
+
+graphBL/config/application.yml

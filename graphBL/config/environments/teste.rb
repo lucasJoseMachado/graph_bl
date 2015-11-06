@@ -76,5 +76,5 @@ Rails.application.configure do
 
   config.cache_store = :dalli_store
 
-  config.assets.prefix = "/app"
+  config.assets.prefix = "/teste"
 end

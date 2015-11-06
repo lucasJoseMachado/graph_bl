@@ -48,3 +48,4 @@ gem 'neography'
 
 #deploy
 gem "passenger"
+gem "figaro"
