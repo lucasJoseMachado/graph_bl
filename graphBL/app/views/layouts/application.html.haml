@@ -5,5 +5,8 @@
     = javascript_include_tag 'application'
     = csrf_meta_tags
   %body
-    .div{"ng-view" => ""}
+    .row{"ng-view" => ""}
       = yield
+    .row.text-center
+      = image_tag("ippuj.png", class: "panel", size: "150x50")
+      = image_tag("udesc.png", class: "panel", size: "250x50")
