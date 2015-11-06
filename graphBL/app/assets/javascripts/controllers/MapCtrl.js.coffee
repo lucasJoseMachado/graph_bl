@@ -31,7 +31,7 @@ angular.module('graph_bl')
       $scope.drawLines(data)
 
   $scope.add_osm_layer = ->
-    L.tileLayer('http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png').addTo($scope.mapInstance)
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo($scope.mapInstance)
 
   $scope.drawLayer = (geometryArray, options={geometryType: 'LineString', layerType: 'Bike'}) ->
     json_layer = $scope.parseArrayToGeoJsonLayer( geometryArray, options.geometryType )
