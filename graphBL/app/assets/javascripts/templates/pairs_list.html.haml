@@ -5,10 +5,8 @@
         Opção {{$index + 1}}
       .col-xs-9
         %a.btn.btn-primary.btn-sm.pull-right{"ng-click" => "show_path($index)"}
-          %i.fa.fa-eye
-            Ver
+          Ver
         %a.btn.btn-primary.btn-sm.pull-right{"ng-click" => "add_path($index)"}
-          %i.fa.fa-plus-square
-            Adicionar
+          Adicionar
     .col-xs-12.text-right
       %h5 > Distância total do caminho: {{pair.path.total_length | number: 3}} metros

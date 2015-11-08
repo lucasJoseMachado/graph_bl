@@ -74,7 +74,5 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.cache_store = :dalli_store
-
-  config.assets.prefix = "/app/assets/"
+  config.cache_store = :dalli_store, nil, {namespace: 'prod_graph_bl'}
 end

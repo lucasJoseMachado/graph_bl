@@ -41,7 +41,6 @@ gem 'byebug'
 #design
 gem 'sass-rails'
 gem 'bootstrap-sass'
-gem 'font-awesome-sass'
 
 #database
 gem 'neography'
