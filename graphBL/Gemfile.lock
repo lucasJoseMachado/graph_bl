@@ -224,3 +224,6 @@ DEPENDENCIES
   sqlite3
   tzinfo-data
   uglifier
+
+BUNDLED WITH
+   1.10.6
