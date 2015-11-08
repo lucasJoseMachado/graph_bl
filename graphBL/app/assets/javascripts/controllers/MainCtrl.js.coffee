@@ -1,6 +1,6 @@
 angular.module('graph_bl')
 
-.controller('MainCtrl', ($scope, $http, $controller, toastr) ->
+.controller('MainCtrl', ['$scope', '$http', '$controller', 'toastr', ($scope, $http, $controller, toastr) ->
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
     angular.extend(this, $controller('PathCtrl', $scope: $scope, $http: $http, toastr))
 
@@ -48,4 +48,4 @@ angular.module('graph_bl')
         $scope.reloadBikeLayer()
         $scope.pairs = data
         $scope.processing = false
-)
+])

@@ -1,6 +1,6 @@
 angular.module('graph_bl')
 
-.controller('NewUserSuggestionCtrl', ($scope, $http, $controller, toastr) ->
+.controller('NewUserSuggestionCtrl', ['$scope', '$http', '$controller', 'toastr', ($scope, $http, $controller, toastr) ->
     angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
 
     $scope.suggestion = {}
@@ -10,7 +10,7 @@ angular.module('graph_bl')
     $scope.mapInstance.setView start_point, start_zoom
     $scope.geoJson = L.geoJson().addTo($scope.mapInstance);
     $scope.add_osm_layer()
-    $http.get("/layers/bike.json").success (data) ->
+    $http.get("layers/bike.json").success (data) ->
       $scope.clearLineLayers()
       $scope.onlyRead = true
       for cluster_color of data
@@ -20,9 +20,9 @@ angular.module('graph_bl')
     $scope.saveSuggestion = (suggestion) ->
       $http.post("/user_suggestions.json", user_suggestion: $scope.suggestion).success (data) ->
         $scope.suggestion = {}
-)
+])
 
-.controller('UserSuggestionCtrl', ($scope, $http, $controller, toastr) ->
+.controller('UserSuggestionCtrl', ['$scope', '$http', '$controller', 'toastr', ($scope, $http, $controller, toastr) ->
     $scope.graph_bl_secret = ''
     $scope.system_secret = 'ciclovias_bdes_2015'
 
@@ -32,4 +32,4 @@ angular.module('graph_bl')
     $scope.destroySuggestion = (suggestion, index) ->
       $http.delete("/user_suggestions/#{suggestion.id}.json").success (data) ->
         $scope.suggestions.splice(index, 1)
-)
+])

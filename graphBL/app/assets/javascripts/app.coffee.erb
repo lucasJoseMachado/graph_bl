@@ -7,6 +7,6 @@
     .otherwise({templateUrl: "user_suggestions/new.html", controller: 'NewUserSuggestionCtrl'})
 ])
 
-.config( (toastrConfig) ->
+.config(['toastrConfig', (toastrConfig) ->
   angular.extend(toastrConfig, positionClass: 'toast-bottom-right')
-)
+])

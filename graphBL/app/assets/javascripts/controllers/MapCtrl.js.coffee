@@ -1,6 +1,6 @@
 angular.module('graph_bl')
 
-.controller('MapCtrl', ($scope, $http) ->
+.controller('MapCtrl', ['$scope', '$http', ($scope, $http) ->
   $scope.init = ->
     $scope.mapInstance = new L.Map 'map'
     start_point = [-26.29918, -48.82080]
@@ -27,7 +27,7 @@ angular.module('graph_bl')
         $scope.user_add_path_points.pop()
 
   $scope.reloadBikeLayer = ->
-    $http.get("/layers/bike.json").success (data) ->
+    $http.get("layers/bike.json").success (data) ->
       $scope.drawLines(data)
 
   $scope.add_osm_layer = ->
@@ -97,4 +97,4 @@ angular.module('graph_bl')
     $scope.clearLineLayers()
     for cluster_color of lines
       $scope.lineLayers = $scope.lineLayers.concat $scope.drawLayer(lines[cluster_color], {geometryType: 'LineString', layerType: cluster_color || 'Bike'})
-)
+])

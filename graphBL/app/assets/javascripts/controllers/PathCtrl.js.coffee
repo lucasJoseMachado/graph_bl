@@ -1,6 +1,6 @@
 angular.module('graph_bl')
 
-.controller('PathCtrl', ($scope, $http, $controller, toastr) ->
+.controller('PathCtrl', ['$scope', '$http', '$controller', 'toastr', ($scope, $http, $controller, toastr) ->
   angular.extend(this, $controller('MapCtrl', $scope: $scope, $http: $http))
 
   $scope.show_path = (index_pair) ->
@@ -33,4 +33,4 @@ angular.module('graph_bl')
         $scope.addGeoJsonLayer($scope.mount_path_geojson(path), 'Bike')
         $scope.clear_current_path()
         $scope.pairs.splice(index_pair, 1)
-)
+])
