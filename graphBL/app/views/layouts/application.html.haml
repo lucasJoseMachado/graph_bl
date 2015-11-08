@@ -1,9 +1,10 @@
+- prefix = Rails.env.production? ? "app" : "teste"
 %html{"ng-app" => "graph_bl"}
   %head
-    %base{href: Rails.env.production? ? "/app/" : "/teste/", target: "_blank"}
+    %base{href: "/#{prefix}/", target: "_blank"}
     %title="GraphBL"
-    = stylesheet_link_tag    'application', media: 'all'
-    = javascript_include_tag 'application'
+    %link{rel: "stylesheet", media: "all", href: "/#{prefix}/#{prefix}/assets/application.css"}
+    %script{src: "/#{prefix}/#{prefix}/assets/application.js"}
     = csrf_meta_tags
   %body
     .row{"ng-view" => ""}
