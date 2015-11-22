@@ -1,24 +1,32 @@
 class LayersController < ApplicationController
-  before_action :set_layer, only: [:car, :bike]
-
-  def car
-    render json: @layer
+  def planned
+    @layer = ActiveRecord::Base.connection.select_all("
+      SELECT st_asText(st_force2d((st_dump(geom)).geom)) as geometry, gid as id FROM ciclovias_planejadas
+    ").to_hash
+    render_layer
   end
 
-  def bike
-    render json: @layer
+  def existing
+    @layer = ActiveRecord::Base.connection.select_all("
+      SELECT st_asText(st_force2d((st_dump(geom)).geom)) as geometry, gid as id FROM ciclovias_existentes
+    ").to_hash
+    render_layer
   end
 
   def index
   end
 
   private
-    def set_layer
-      @layer = GraphDatabase.execute_query(
-        <<-EOF
-          MATCH (start:Point)-[track:#{params[:action].camelize}]->(end:Point)
-          RETURN distinct id(track), track.geometry, CASE (start.cluster_color = end.cluster_color) WHEN true THEN start.cluster_color ELSE null END
-        EOF
-      ).map{ |track| { geometry: JSON.parse(track[1]), cluster_color: track[2], id: track[0] } }.group_by{ |v| v[:cluster_color] }
+    def render_layer
+      result = @layer.map do |it|
+        geom = it["geometry"]
+        geom.slice!("LINESTRING(")
+        geom.slice!(")")
+        geom = geom.split(",")
+        geom.map!{|g| g.split(" ")}
+        it["geometry"] = geom
+        it
+      end
+      render json: result
     end
 end

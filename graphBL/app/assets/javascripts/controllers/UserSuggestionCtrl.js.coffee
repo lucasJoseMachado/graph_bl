@@ -10,12 +10,12 @@ angular.module('graph_bl')
     $scope.mapInstance.setView start_point, start_zoom
     $scope.geoJson = L.geoJson().addTo($scope.mapInstance);
     $scope.add_osm_layer()
-    $http.get("layers/bike.json").success (data) ->
-      $scope.clearLineLayers()
-      $scope.onlyRead = true
-      for cluster_color of data
-        $scope.lineLayers = $scope.lineLayers.concat $scope.drawLayer(data[cluster_color], {geometryType: 'LineString', layerType: 'FF0000'})
-      $scope.onlyRead = false
+    $http.get("layers/planned.json").success (data) ->
+      console.log data
+      $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'FF0000'})
+      $http.get("layers/existing.json").success (data) ->
+        console.log data
+        $scope.drawLayer(data, {geometryType: 'LineString', layerType: '0000FF'})
 
     $scope.saveSuggestion = (suggestion) ->
       $http.post("/user_suggestions.json", user_suggestion: $scope.suggestion).success (data) ->

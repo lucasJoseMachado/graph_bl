@@ -3,7 +3,6 @@
 .config(['$routeProvider', ($routeProvider) ->
   $routeProvider
     .when('/listar_sugestoes', {templateUrl: "user_suggestions/index.html", controller: 'UserSuggestionCtrl'})
-    .when('/planejamento', {templateUrl: "main.html", controller: 'MainCtrl'})
     .otherwise({templateUrl: "user_suggestions/new.html", controller: 'NewUserSuggestionCtrl'})
 ])
 

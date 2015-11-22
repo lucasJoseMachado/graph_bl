@@ -121,6 +121,7 @@ GEM
     passenger (5.0.20)
       rack
       rake (>= 0.8.1)
+    pg (0.18.3)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
@@ -211,6 +212,7 @@ DEPENDENCIES
   neography
   paleta
   passenger
+  pg
   quiet_assets
   rails
   rails-assets-leaflet

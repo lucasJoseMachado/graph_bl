@@ -1,9 +1,0 @@
-%div{"ng-show" => "graph_bl_secret != system_secret"}
-  .col-xs-12.form-group
-    %input.form-control{type: 'text', "ng-model" => "graph_bl_secret", placeholder: "Senha de acesso"}
-%div{"ng-show" => "graph_bl_secret == system_secret", "ng-class" => "{'col-xs-8': pairs, 'left-panel': pairs, 'col-xs-12': !pairs}"}
-  .row.form-group{"ng-include" => "'form_actions.html'"}
-  .row.form-group
-    .col-xs-12.text-center
-      #map
-.col-xs-4.pair_list{"ng-if" => "pairs", "ng-include" => "'pairs_list.html'"}
