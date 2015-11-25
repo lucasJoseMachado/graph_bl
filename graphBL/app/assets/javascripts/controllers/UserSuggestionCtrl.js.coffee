@@ -11,10 +11,8 @@ angular.module('graph_bl')
     $scope.geoJson = L.geoJson().addTo($scope.mapInstance);
     $scope.add_osm_layer()
     $http.get("layers/planned.json").success (data) ->
-      console.log data
       $scope.drawLayer(data, {geometryType: 'LineString', layerType: 'FF0000'})
       $http.get("layers/existing.json").success (data) ->
-        console.log data
         $scope.drawLayer(data, {geometryType: 'LineString', layerType: '0000FF'})
 
     $scope.saveSuggestion = (suggestion) ->
