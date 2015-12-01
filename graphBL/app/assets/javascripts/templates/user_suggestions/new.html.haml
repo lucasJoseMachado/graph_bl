@@ -1,14 +1,19 @@
-.col-xs-12
-  %h1.text-center
-    %strong= "Sugestões para a malha cicloviária de Joinville"
-  .text-center.form-group= "As linhas vermelhas no mapa representam a malha cicloviária planejada e as azuis representam a malha cicloviária existente."
-  .col-xs-8
-    .row.form-group
-      .col-xs-12.text-center
-        #mapOnlyRead
-  .col-xs-4
-    %h1.text-center= "Contribua você também"
-    %h4.text-center= "preencha a sua sugestão"
+%h2.text-center{style: "margin-top: 0px"}
+  %strong= "Sugestões para a malha cicloviária de Joinville"
+.col-xs-8
+  .row.form-group
+    .col-xs-12.text-center
+      #mapOnlyRead
+.col-xs-4
+  %h4= "No mapa ao lado esta destacada a malha cicloviária de Joinville composta por ciclovias, ciclo-faixas e ciclo-rotas."
+  %h4= "Em vermelho esta destacada a malha cicloviária planejada enquanto que em azul esta destacada a malha cicloviária existente."
+  %br
+  %div.text-center{"ng-show" => "!contribuir"}
+    %h3= "Gostaria de contribuir para o planejamento cicloviário de Joinville?"
+    %button.btn.btn-primary.btn-lg{"ng-click" => "contribuir = true"}
+      = "Sim, quero contribuir"
+  %div{"ng-show" => "contribuir"}
+    %h4.text-center= "Envie sugestões para o plano cicloviário"
     .col-xs-12.form-group
       %input.form-control{type: 'text', "ng-model" => "suggestion.name", placeholder: "Nome"}
     .col-xs-12.form-group
